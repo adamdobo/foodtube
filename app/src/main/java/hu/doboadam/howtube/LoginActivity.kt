@@ -80,10 +80,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        googleSignInClient.signOut()
-        firebaseAuth.signOut()
-        val firebaseUser = firebaseAuth.currentUser
-        //TODO("if user is logged in do something")
+        if (firebaseAuth.currentUser != null) {
+            advance()
+        }
     }
 
     private fun signInWithGoogle(){
