@@ -1,4 +1,4 @@
-package hu.doboadam.howtube
+package hu.doboadam.howtube.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -18,6 +18,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import hu.doboadam.howtube.R
+import hu.doboadam.howtube.ui.content.ContentActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
