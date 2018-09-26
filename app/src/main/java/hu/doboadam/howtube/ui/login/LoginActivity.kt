@@ -33,7 +33,6 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         private const val EMAIL = "email"
         private const val PUBLIC_PROFILE = "public_profile"
-        private const val USER_FRIENDS = "user_friends"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun advance() {
+        finish()
         startActivity(Intent(this, ContentActivity::class.java))
     }
 }

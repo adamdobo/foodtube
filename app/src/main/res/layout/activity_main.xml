@@ -5,7 +5,6 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".ui.login.LoginActivity">
 
     <com.google.android.gms.common.SignInButton
@@ -26,11 +25,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:drawableLeft="@drawable/com_facebook_button_icon_blue"
         android:drawableStart="@drawable/com_facebook_button_icon_blue"
         android:paddingEnd="0dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="0dp"
         android:paddingStart="20dp"
         android:text="@string/common_signin_button_text"
         android:textAllCaps="false"
