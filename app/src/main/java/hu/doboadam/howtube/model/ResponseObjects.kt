@@ -5,21 +5,34 @@ data class YoutubeVideoResponse(val kind: String, val etag: String,
 
 data class PageInfo(val totalResults: Int, val resultsPerPage: Int)
 
-data class YoutubeVideo(val kind: String, val etag: String,
-                        val id: String, val snippet: YoutubeVideoSnippet)
+data class YoutubeVideo(val kind: String = "", val etag: String = "",
+                        val id: String = "", val snippet: YoutubeVideoSnippet = YoutubeVideoSnippet(),
+                        val contentDetails: YoutubeVideoContentDetails = YoutubeVideoContentDetails(),
+                        val ratingsAndComments: RatingsAndComments = RatingsAndComments())
 
-data class YoutubeVideoSnippet(val publishedAt: String, val channelId: String,
-                               val title: String, val description: String,
-                               val thumbnails: YoutubeThumbnails, val channelTitle: String,
-                               val tags: List<String>, val categoryId: String,
-                               val liveBroadcastContent: String, val defaultLanguage: String,
-                               val localized: YoutubeLocalizedSnippet, val defaultAudioLanguage: String)
+data class YoutubeVideoSnippet(val publishedAt: String = "", val channelId: String = "",
+                               val title: String = "", val description: String = "",
+                               val thumbnails: YoutubeThumbnails = YoutubeThumbnails(), val channelTitle: String = "",
+                               val tags: List<String> = emptyList(), val categoryId: String = "",
+                               val liveBroadcastContent: String = "", val defaultLanguage: String = "",
+                               val localized: YoutubeLocalizedSnippet = YoutubeLocalizedSnippet(), val defaultAudioLanguage: String = "")
 
-data class YoutubeLocalizedSnippet(val title: String, val description: String)
+data class YoutubeLocalizedSnippet(val title: String = "", val description: String = "")
 
-data class YoutubeThumbnails(val default: YoutubeThumbnail, val medium: YoutubeThumbnail,
-                             val high: YoutubeThumbnail, val standard: YoutubeThumbnail,
-                             val maxres: YoutubeThumbnail)
+data class YoutubeThumbnails(val default: YoutubeThumbnail = YoutubeThumbnail(), val medium: YoutubeThumbnail = YoutubeThumbnail(),
+                             val high: YoutubeThumbnail = YoutubeThumbnail(), val standard: YoutubeThumbnail = YoutubeThumbnail(),
+                             val maxres: YoutubeThumbnail = YoutubeThumbnail())
 
-data class YoutubeThumbnail(val url: String, val width: Int,
-                            val height: Int)
+data class YoutubeThumbnail(val url: String = "", val width: Int = 0,
+                            val height: Int = 0)
+
+data class YoutubeVideoContentDetails(val duration: String = "", val dimension: String = "",
+                                      val definition: String = "", val caption: String = "",
+                                      val licensedContent: Boolean = false, val projection: String = "")
+
+data class YoutubeVideoRating(val likes: Int = 0, val dislikes: Int = 0)
+
+data class Comment(val author: String, val message: String)
+
+data class RatingsAndComments(val rating: YoutubeVideoRating = YoutubeVideoRating(),
+                              val comments: List<Comment> = emptyList())

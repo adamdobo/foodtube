@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "hu.doboadam.howtube"
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -40,12 +40,17 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.3'
     implementation 'com.google.firebase:firebase-firestore:17.1.0'
 
+    //Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 
     //Anko
     implementation 'org.jetbrains.anko:anko-common:0.10.4'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     //Moshi
     implementation "com.squareup.retrofit2:converter-moshi:2.0.0"

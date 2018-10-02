@@ -1,54 +1,45 @@
 package hu.doboadam.howtube.ui.content
 
-import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AppCompatActivity
-import com.google.android.youtube.player.YouTubeInitializationResult
-import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerSupportFragment
+import android.view.Menu
+import android.view.MenuItem
+import com.google.firebase.auth.FirebaseAuth
 import hu.doboadam.howtube.R
-import hu.doboadam.howtube.extensions.createDialog
-import kotlinx.android.synthetic.main.activity_content.*
+import hu.doboadam.howtube.extensions.replaceFragment
+import hu.doboadam.howtube.model.YoutubeVideo
+import hu.doboadam.howtube.ui.login.LoginActivity
 
-class ContentActivity : AppCompatActivity() {
-
-    private lateinit var viewModel: ContentViewModel
-    private lateinit var youtubePlayerFragment: YouTubePlayerSupportFragment
-    private lateinit var youtubePlayer: YouTubePlayer
-
+class ContentActivity : AppCompatActivity(), VideoListFragment.OnVideoClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_content)
-        viewModel = ViewModelProviders.of(this).get(ContentViewModel::class.java)
-        initializeYoutubePlayer()
+        replaceFragment(VideoListFragment.newInstance(), R.id.fragmentContainer)
+    }
 
-        addVideo.setOnClickListener {
-          createDialog {
-                setTitle("Add new video")
-                setView(R.layout.dialog_add_new_video)
-                setNegativeButton("Cancel", null)
-                setPositiveButton("OK") { _, _ ->
-                    viewModel.checkAndUploadVideo("Ks-_Mh1QhMc")
-                }.show()
-            }
+    override fun onVideoClicked(video: YoutubeVideo) {
+        val intent = Intent(this, PlayVideoActivity::class.java)
+        intent.putExtra(PlayVideoActivity.VIDEO_ID, video.id)
+        startActivity(intent)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.content_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item?.itemId == R.id.menu_logout){
+            logout()
         }
+        return super.onOptionsItemSelected(item)
     }
 
-    private fun initializeYoutubePlayer() {
-        youtubePlayerFragment = supportFragmentManager.findFragmentById(R.id.youtubePlayer) as YouTubePlayerSupportFragment
-        youtubePlayerFragment.initialize(getString(R.string.api_key), object: YouTubePlayer.OnInitializedListener {
-            override fun onInitializationSuccess(provider: YouTubePlayer.Provider, player: YouTubePlayer, wasRestored: Boolean) {
-                youtubePlayer = player
-                youtubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT)
-            }
-
-            override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
-                //TODO: do something on failure
-            }
-
-        })
+    private fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
-
 }

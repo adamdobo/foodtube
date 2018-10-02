@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -21,6 +21,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import hu.doboadam.howtube.R
 import hu.doboadam.howtube.ui.content.ContentActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 
 class LoginActivity : AppCompatActivity() {
@@ -83,6 +84,9 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
         if (firebaseAuth.currentUser != null) {
             advance()
+        } else {
+            LoginManager.getInstance().logOut()
+            googleSignInClient.signOut()
         }
     }
 
@@ -91,16 +95,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
         if(requestCode == RC_SIGN_IN){
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
             try {
-                val account = task.result
-                firebaseAuthWithGoogle(account)
+                if(task.isSuccessful) {
+                    val account = task.result
+                    firebaseAuthWithGoogle(account)
+                }
             } catch (e: ApiException) {
-                Log.e(this@LoginActivity.localClassName, "Google Sign-in failed", e)
+                Timber.e("Google Sign-in failed with $e")
             }
         } else {
             callbackManager.onActivityResult(requestCode, resultCode, data)

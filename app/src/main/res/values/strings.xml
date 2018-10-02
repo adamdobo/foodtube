@@ -5,4 +5,8 @@
     <string name="title_activity_content">ContentActivity</string>
     <string name="youtube_base_url">https://www.googleapis.com/youtube/v3/videos</string>
     <string name="api_key">AIzaSyBk6clBc6NZKnhv1lF_VAJaU3QvA4AEFI0</string>
+    <string name="logout">Logout</string>
+    <string name="add_new_video">Add new video</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>
