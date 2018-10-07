@@ -10,6 +10,7 @@ import hu.doboadam.howtube.R
 import hu.doboadam.howtube.extensions.replaceFragment
 import hu.doboadam.howtube.model.YoutubeVideo
 import hu.doboadam.howtube.ui.login.LoginActivity
+import hu.doboadam.howtube.ui.playvideo.PlayVideoActivity
 
 class ContentActivity : AppCompatActivity(), VideoListFragment.OnVideoClickListener {
 

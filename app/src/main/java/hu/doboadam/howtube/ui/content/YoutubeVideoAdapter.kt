@@ -34,12 +34,14 @@ class YoutubeVideoAdapter(private val videos: MutableList<YoutubeVideo>, private
 
     class YoutubeVideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(youtubeVideo: YoutubeVideo, listener: (YoutubeVideo) -> Unit) = with(itemView) {
+            with(youtubeVideo) {
             Picasso.get()
-                    .load(youtubeVideo.snippet.thumbnails.getMostFittingThumbnailUrl())
+                    .load(snippet.thumbnails.getMostFittingThumbnailUrl())
                     .placeholder(R.drawable.video_placeholder)
                     .into(videoThumbnail)
-            videoTitle.text = youtubeVideo.snippet.title
-            videoDuration.text = youtubeVideo.contentDetails.duration.parseYoutubeDuration().toString()
+            videoTitle.text = snippet.title
+            videoDuration.text = contentDetails.duration.parseYoutubeDuration()
+            }
             setOnClickListener { listener(youtubeVideo) }
         }
     }

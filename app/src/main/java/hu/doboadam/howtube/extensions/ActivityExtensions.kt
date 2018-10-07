@@ -3,6 +3,7 @@ package hu.doboadam.howtube.extensions
 import android.app.AlertDialog
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 
 
 fun AppCompatActivity.createDialog(func: AlertDialog.Builder.() -> Unit): AlertDialog =
@@ -20,9 +21,9 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment, containerId: Int) {
             .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
             .replace(containerId, fragment)
             .commit()
-    }
+}
 
-fun AppCompatActivity.addFragmentWithTag(fragment: Fragment, containerId: Int, tag: String){
+fun AppCompatActivity.addFragmentWithTag(fragment: Fragment, containerId: Int, tag: String) {
     supportFragmentManager.beginTransaction()
             .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
             .add(containerId, fragment, tag)
@@ -30,3 +31,6 @@ fun AppCompatActivity.addFragmentWithTag(fragment: Fragment, containerId: Int, t
             .commit()
     supportFragmentManager.executePendingTransactions()
 }
+
+fun AppCompatActivity.getFirebaseUserId() =
+        FirebaseAuth.getInstance().currentUser?.uid

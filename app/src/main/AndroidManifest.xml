@@ -46,7 +46,8 @@
             android:name=".ui.content.ContentActivity"
             android:label="@string/title_activity_content" />
 
-        <activity android:name=".ui.content.PlayVideoActivity" />
+        <activity android:name=".ui.playvideo.PlayVideoActivity"
+            android:theme="@style/NoTitleActivity"/>
 
     </application>
 
