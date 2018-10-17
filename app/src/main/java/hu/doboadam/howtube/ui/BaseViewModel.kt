@@ -12,7 +12,7 @@ abstract class BaseViewModel: ViewModel() {
 
     abstract fun startListeningToDbChanges()
 
-    fun stopListeningToDbChanges(){
+    open fun stopListeningToDbChanges(){
         listener.remove()
     }
 

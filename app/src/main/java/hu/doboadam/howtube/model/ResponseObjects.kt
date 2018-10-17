@@ -7,8 +7,8 @@ data class PageInfo(val totalResults: Int, val resultsPerPage: Int)
 
 data class YoutubeVideo(val kind: String = "", val etag: String = "",
                         val id: String = "", val snippet: YoutubeVideoSnippet = YoutubeVideoSnippet(),
-                        val contentDetails: YoutubeVideoContentDetails = YoutubeVideoContentDetails(),
-                        val rating : Double = 0.0, val comments: List<Comment> = emptyList())
+                        val contentDetails: YoutubeVideoContentDetails = YoutubeVideoContentDetails(), val comments: List<Comment> = emptyList(),
+                        var categoryId: Int = 0)
 
 data class YoutubeVideoSnippet(val publishedAt: String = "", val channelId: String = "",
                                val title: String = "", val description: String = "",
@@ -31,3 +31,7 @@ data class YoutubeVideoContentDetails(val duration: String = "", val dimension: 
                                       val licensedContent: Boolean = false, val projection: String = "")
 
 data class Comment(val author: String? = "", val message: String = " ", val timeStamp : Long = 0)
+
+data class Rating(val author: String = "", val rating: Float = 0f)
+
+data class Category(val id: Int = 0, val name: String = "")

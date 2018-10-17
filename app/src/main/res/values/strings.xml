@@ -9,6 +9,9 @@
     <string name="add_new_video">Add new video</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
-    <string name="add_a_comment">Add a comment...</string>
+    <string name="add_a_comment">Add a comment…</string>
     <string name="submit">Submit</string>
+    <string name="video_url">Video URL</string>
+    <string name="users">%1$d users</string>
+    <string name="user">%1$d user</string>
 </resources>

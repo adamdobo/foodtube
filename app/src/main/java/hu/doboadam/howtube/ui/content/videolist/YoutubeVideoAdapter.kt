@@ -1,4 +1,4 @@
-package hu.doboadam.howtube.ui.content
+package hu.doboadam.howtube.ui.content.videolist
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -24,10 +24,9 @@ class YoutubeVideoAdapter(private val videos: MutableList<YoutubeVideo>, private
         holder.bind(videos[position], listener)
     }
 
-    fun setList(it: List<YoutubeVideo>) {
+    fun setList(list: List<YoutubeVideo>) {
         videos.clear()
-        videos.addAll(it)
-        videos.reverse()
+        videos.addAll(list)
         notifyDataSetChanged()
     }
 

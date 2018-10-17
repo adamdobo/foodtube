@@ -1,9 +1,10 @@
 package hu.doboadam.howtube.extensions
 
-import android.app.AlertDialog
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import hu.doboadam.howtube.ui.BaseViewModelFragment
 
 
 fun AppCompatActivity.createDialog(func: AlertDialog.Builder.() -> Unit): AlertDialog =
@@ -11,16 +12,21 @@ fun AppCompatActivity.createDialog(func: AlertDialog.Builder.() -> Unit): AlertD
             func()
         }.create()
 
-fun Fragment.createDialog(func: AlertDialog.Builder.() -> Unit): AlertDialog =
-        AlertDialog.Builder(context).apply {
-            func()
-        }.create()
+fun Fragment.createDialog(func: AlertDialog.Builder.() -> Unit): AlertDialog? =
+        context?.let {
+            AlertDialog.Builder(it).apply {
+                func()
+            }.create()
+        }
 
-fun AppCompatActivity.replaceFragment(fragment: Fragment, containerId: Int) {
-    supportFragmentManager.beginTransaction()
-            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+fun AppCompatActivity.replaceFragment(fragment: BaseViewModelFragment, containerId: Int, withBackStack: Boolean) {
+    val transaction = supportFragmentManager.beginTransaction()
+            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.animator.fade_in, android.R.animator.fade_out)
             .replace(containerId, fragment)
-            .commit()
+    if (withBackStack) {
+        transaction.addToBackStack(fragment.TAG)
+    }
+    transaction.commit()
 }
 
 fun AppCompatActivity.addFragmentWithTag(fragment: Fragment, containerId: Int, tag: String) {
@@ -32,5 +38,5 @@ fun AppCompatActivity.addFragmentWithTag(fragment: Fragment, containerId: Int, t
     supportFragmentManager.executePendingTransactions()
 }
 
-fun AppCompatActivity.getFirebaseUserId() =
+fun getFirebaseUserId() =
         FirebaseAuth.getInstance().currentUser?.uid

@@ -6,13 +6,16 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.RatingBar
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import hu.doboadam.howtube.R
+import hu.doboadam.howtube.R.id.*
 import hu.doboadam.howtube.extensions.addFragmentWithTag
 import hu.doboadam.howtube.extensions.getFirebaseUserId
 import hu.doboadam.howtube.model.Comment
+import hu.doboadam.howtube.model.Rating
 import hu.doboadam.howtube.model.YoutubeVideo
 import kotlinx.android.synthetic.main.activity_play_video.*
 import timber.log.Timber
@@ -38,12 +41,19 @@ class PlayVideoActivity : AppCompatActivity() {
         submitButton.setOnClickListener {
             viewModel.submitComment(Comment(getFirebaseUserId(), commentEditText.text.toString(), System.currentTimeMillis()))
         }
+        ratingBar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { _, fl: Float, _ ->
+            viewModel.submitRating(getFirebaseUserId(), fl)
+        }
         setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
         adapter = CommentListAdapter(emptyList<Comment>().toMutableList())
-        commentList.layoutManager = LinearLayoutManager(this)
+        commentList.layoutManager = object: LinearLayoutManager(this) {
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
         commentList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         commentList.adapter = adapter
     }
@@ -51,9 +61,28 @@ class PlayVideoActivity : AppCompatActivity() {
     private fun observeViewmodel() {
         viewModel.getYoutubeVideoLiveData.observe(this, Observer<YoutubeVideo> { value ->
             value?.let {
-                refreshData(value)
+                refreshData(it)
             }
         })
+
+        viewModel.getRatingsLiveData.observe(this, Observer<List<Rating>> { value ->
+            value?.let {
+                refreshRatings(it)
+            }
+        })
+    }
+
+    private fun refreshRatings(ratings: List<Rating>) {
+        val rating = ratings.firstOrNull { it.author == getFirebaseUserId() }
+        ratingBar.rating = when (rating) {
+            null -> 0F
+            else -> rating.rating
+        }
+        ratingText.text = ratings.map { it.rating }.average().toString()
+        usersText.text = when {
+            ratings.size > 1 -> getString(R.string.users, ratings.size)
+            else -> getString(R.string.user, ratings.size)
+        }
     }
 
     override fun onStart() {

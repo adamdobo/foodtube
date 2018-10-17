@@ -1,29 +1,37 @@
-package hu.doboadam.howtube.ui.content
+package hu.doboadam.howtube.ui.content.videolist
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import hu.doboadam.howtube.R
+import hu.doboadam.howtube.R.id.videoList
 import hu.doboadam.howtube.extensions.createDialog
 import hu.doboadam.howtube.model.YoutubeVideo
+import hu.doboadam.howtube.ui.BaseViewModelFragment
 import kotlinx.android.synthetic.main.dialog_add_new_video.view.*
-import kotlinx.android.synthetic.main.fragment_videolist.view.*
+import kotlinx.android.synthetic.main.fragment_videolist.*
 
-class VideoListFragment : Fragment() {
+class VideoListFragment : BaseViewModelFragment() {
 
-    private lateinit var viewModel: ContentViewModel
+    override val TAG: String = "VideoListFragment"
     private lateinit var adapter: YoutubeVideoAdapter
-    private lateinit var listener: VideoListFragment.OnVideoClickListener
+    private lateinit var listener: OnVideoClickListener
+    private lateinit var viewModel: VideoListViewModel
+    private var categoryId: Int = 0
 
     companion object {
-        fun newInstance(): VideoListFragment {
-            return VideoListFragment()
+        private const val CATEGORY_ID = "category_id"
+        fun newInstance(id: Int): VideoListFragment {
+            val fragment = VideoListFragment()
+            val bundle = Bundle()
+            bundle.putInt(CATEGORY_ID, id)
+            fragment.arguments = bundle
+            return fragment
         }
     }
 
@@ -34,20 +42,10 @@ class VideoListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ContentViewModel::class.java)
+        categoryId = arguments?.getInt(CATEGORY_ID)!!
+        viewModel = ViewModelProviders.of(this, VideoListViewModelFactory(categoryId)).get(VideoListViewModel::class.java)
         observeViewModel()
         setUpRecyclerView()
-        view?.addVideo?.setOnClickListener {
-            createDialog {
-                setTitle(getString(R.string.add_new_video))
-                val dialogView = layoutInflater.inflate(R.layout.dialog_add_new_video, null)
-                setView(dialogView)
-                setNegativeButton(getString(R.string.cancel), null)
-                setPositiveButton(getString(R.string.ok)) { _, _ ->
-                    viewModel.checkAndUploadVideo(dialogView.videoUrlText.text.toString())
-                }
-            }.show()
-        }
     }
 
 
@@ -68,23 +66,20 @@ class VideoListFragment : Fragment() {
         })
 
     }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.startListeningToDbChanges()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.stopListeningToDbChanges()
-    }
-
     private fun setUpRecyclerView() {
         adapter = YoutubeVideoAdapter(emptyList<YoutubeVideo>().toMutableList()) {
             listener.onVideoClicked(it)
         }
-        view?.videoList?.layoutManager = LinearLayoutManager(context)
-        view?.videoList?.adapter = adapter
+        videoList.layoutManager = LinearLayoutManager(context)
+        videoList.adapter = adapter
+    }
+
+    override fun startListeningToDb() {
+        viewModel.startListeningToDbChanges()
+    }
+
+    override fun stopListeningToDb() {
+        viewModel.stopListeningToDbChanges()
     }
 
     interface OnVideoClickListener {

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import hu.doboadam.howtube.R
 import hu.doboadam.howtube.model.Comment
 import kotlinx.android.synthetic.main.item_comment.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CommentListAdapter(private val commentList: MutableList<Comment>) : RecyclerView.Adapter<CommentListAdapter.CommentViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -22,7 +24,7 @@ class CommentListAdapter(private val commentList: MutableList<Comment>) : Recycl
     fun refreshItems(comments: List<Comment>) {
         commentList.clear()
         commentList.addAll(comments)
-        commentList.sortBy { it.timeStamp }
+        commentList.sortByDescending { it.timeStamp }
         notifyDataSetChanged()
     }
 
@@ -31,7 +33,8 @@ class CommentListAdapter(private val commentList: MutableList<Comment>) : Recycl
             with(comment){
                 commentMessage.text = message
                 commentAuthor.text = author
-                commentTime.text = timeStamp.toString()
+                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                commentTime.text = sdf.format(Date(timeStamp))
             }
         }
 
