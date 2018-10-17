@@ -1,5 +1,7 @@
 package hu.doboadam.howtube.model
 
+import java.util.*
+
 data class YoutubeVideoResponse(val kind: String, val etag: String,
                                 val pageInfo: PageInfo, val items: List<YoutubeVideo>)
 
@@ -35,3 +37,5 @@ data class Comment(val author: String? = "", val message: String = " ", val time
 data class Rating(val author: String = "", val rating: Float = 0f)
 
 data class Category(val id: Int = 0, val name: String = "")
+
+data class Contest(val categoryId: Int = 0, val description: String = "", val endDate: Date = Date(), val startDate: Date = Date())

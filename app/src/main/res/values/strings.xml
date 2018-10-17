@@ -14,4 +14,8 @@
     <string name="video_url">Video URL</string>
     <string name="users">%1$d users</string>
     <string name="user">%1$d user</string>
+    <string name="ongoing_contest">There is an ongoing contest! Click here to see the details! Remaining time: %1$s</string>
+    <string name="details">Details</string>
+    <string name="got_it">Got it</string>
+    <string name="go_to_category">Go to category</string>
 </resources>
