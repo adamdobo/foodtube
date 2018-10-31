@@ -10,6 +10,7 @@ import hu.doboadam.howtube.extensions.getMostFittingThumbnailUrl
 import hu.doboadam.howtube.extensions.parseYoutubeDuration
 import hu.doboadam.howtube.model.YoutubeVideo
 import kotlinx.android.synthetic.main.item_video.view.*
+import java.util.*
 
 class YoutubeVideoAdapter(private val videos: MutableList<YoutubeVideo>, private val listener: (YoutubeVideo) -> Unit) : RecyclerView.Adapter<YoutubeVideoAdapter.YoutubeVideoViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): YoutubeVideoViewHolder {
@@ -24,9 +25,14 @@ class YoutubeVideoAdapter(private val videos: MutableList<YoutubeVideo>, private
         holder.bind(videos[position], listener)
     }
 
-    fun setList(list: List<YoutubeVideo>) {
+    fun setList(list: List<YoutubeVideo>, startDate: Date?) {
         videos.clear()
-        videos.addAll(list)
+        if(startDate != null) {
+            videos.addAll(list.filter { it.uploadDate.toDate().time > startDate.time }
+                    .sortedByDescending { video -> video.ratings.map { it.rating }.average() })
+        } else {
+            videos.addAll(list)
+        }
         notifyDataSetChanged()
     }
 

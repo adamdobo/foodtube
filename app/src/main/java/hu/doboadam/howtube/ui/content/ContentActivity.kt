@@ -61,7 +61,7 @@ class ContentActivity : AppCompatActivity(), VideoListFragment.OnVideoClickListe
                             setTitle(getString(R.string.details))
                             setMessage(contest.description)
                             setPositiveButton(getString(R.string.go_to_category)) { _, _ ->
-                                replaceFragment(VideoListFragment.newInstance(contest.categoryId), R.id.fragmentContainer, true)
+                                replaceFragment(VideoListFragment.newInstance(contest.categoryId, contest.startDate), R.id.fragmentContainer, true)
                             }
                             setNegativeButton(getString(R.string.got_it)) { dialogInterface: DialogInterface, _ ->
                                 dialogInterface.dismiss()
@@ -81,7 +81,7 @@ class ContentActivity : AppCompatActivity(), VideoListFragment.OnVideoClickListe
     }
 
     override fun onCategoryClicked(id: Int) {
-        replaceFragment(VideoListFragment.newInstance(id), R.id.fragmentContainer, true)
+        replaceFragment(VideoListFragment.newInstance(id, null), R.id.fragmentContainer, true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

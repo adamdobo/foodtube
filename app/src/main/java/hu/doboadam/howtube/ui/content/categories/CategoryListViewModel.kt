@@ -8,10 +8,10 @@ import com.google.firebase.firestore.QuerySnapshot
 import hu.doboadam.howtube.extensions.convertToYoutubeVideo
 import hu.doboadam.howtube.extensions.isYoutubeVideo
 import hu.doboadam.howtube.model.Category
+import hu.doboadam.howtube.model.YoutubeVideo
 import hu.doboadam.howtube.network.RetrofitInstance
 import hu.doboadam.howtube.network.services.YoutubeApi
 import hu.doboadam.howtube.ui.BaseViewModel
-import hu.doboadam.howtube.ui.content.videolist.VideoListViewModel
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import timber.log.Timber
@@ -26,7 +26,6 @@ class CategoryListViewModel : BaseViewModel() {
         private const val VIDEOS = "videos"
         private val REGEX = "((?<=([vV])/)|(?<=be/)|(?<=([?&])v=)|(?<=embed/))([\\w-]+).".toRegex()
     }
-
     fun getCategoryListLiveData(): LiveData<List<Category>> = categoryListLiveData
 
     override fun startListeningToDbChanges() {

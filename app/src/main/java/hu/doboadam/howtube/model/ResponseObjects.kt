@@ -1,5 +1,6 @@
 package hu.doboadam.howtube.model
 
+import com.google.firebase.Timestamp
 import java.util.*
 
 data class YoutubeVideoResponse(val kind: String, val etag: String,
@@ -7,10 +8,12 @@ data class YoutubeVideoResponse(val kind: String, val etag: String,
 
 data class PageInfo(val totalResults: Int, val resultsPerPage: Int)
 
+
 data class YoutubeVideo(val kind: String = "", val etag: String = "",
                         val id: String = "", val snippet: YoutubeVideoSnippet = YoutubeVideoSnippet(),
                         val contentDetails: YoutubeVideoContentDetails = YoutubeVideoContentDetails(), val comments: List<Comment> = emptyList(),
-                        var categoryId: Int = 0)
+                        var categoryId: Int = 0, var uploadDate: Timestamp = Timestamp(Date()),
+                        var ratings: List<Rating> = emptyList())
 
 data class YoutubeVideoSnippet(val publishedAt: String = "", val channelId: String = "",
                                val title: String = "", val description: String = "",

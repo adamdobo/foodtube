@@ -9,12 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import hu.doboadam.howtube.R
-import hu.doboadam.howtube.R.id.videoList
-import hu.doboadam.howtube.extensions.createDialog
 import hu.doboadam.howtube.model.YoutubeVideo
 import hu.doboadam.howtube.ui.BaseViewModelFragment
-import kotlinx.android.synthetic.main.dialog_add_new_video.view.*
 import kotlinx.android.synthetic.main.fragment_videolist.*
+import java.util.*
 
 class VideoListFragment : BaseViewModelFragment() {
 
@@ -22,14 +20,17 @@ class VideoListFragment : BaseViewModelFragment() {
     private lateinit var adapter: YoutubeVideoAdapter
     private lateinit var listener: OnVideoClickListener
     private lateinit var viewModel: VideoListViewModel
-    private var categoryId: Int = 0
+    private var categoryId = 0
+    private var startDate : Date? = null
 
     companion object {
         private const val CATEGORY_ID = "category_id"
-        fun newInstance(id: Int): VideoListFragment {
+        private const val START_DATE = "start_date"
+        fun newInstance(id: Int, startDate: Date?): VideoListFragment {
             val fragment = VideoListFragment()
             val bundle = Bundle()
             bundle.putInt(CATEGORY_ID, id)
+            bundle.putSerializable(START_DATE, startDate)
             fragment.arguments = bundle
             return fragment
         }
@@ -43,6 +44,7 @@ class VideoListFragment : BaseViewModelFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         categoryId = arguments?.getInt(CATEGORY_ID)!!
+        startDate = arguments?.getSerializable(START_DATE) as Date?
         viewModel = ViewModelProviders.of(this, VideoListViewModelFactory(categoryId)).get(VideoListViewModel::class.java)
         observeViewModel()
         setUpRecyclerView()
@@ -61,7 +63,7 @@ class VideoListFragment : BaseViewModelFragment() {
     private fun observeViewModel() {
         viewModel.getYoutubeLiveData().observe(this, Observer<List<YoutubeVideo>> { value ->
             value?.let {
-                adapter.setList(it)
+                adapter.setList(it, startDate)
             }
         })
 

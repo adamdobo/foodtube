@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 import hu.doboadam.howtube.extensions.convertToYoutubeVideo
 import hu.doboadam.howtube.extensions.isYoutubeVideo
+import hu.doboadam.howtube.model.Rating
 import hu.doboadam.howtube.model.YoutubeVideo
 import hu.doboadam.howtube.network.RetrofitInstance
 import hu.doboadam.howtube.network.services.YoutubeApi
@@ -32,9 +33,15 @@ class VideoListViewModel(private val categoryId: Int) : BaseViewModel() {
             }
             val videos = emptyList<YoutubeVideo>().toMutableList()
             for (docs in snapshots!!) {
-                videos.add(docs.toObject(YoutubeVideo::class.java))
+                val video = docs.toObject(YoutubeVideo::class.java)
+                val ratings = db.collection("videos/${video.id}/ratings").get()
+                ratings.addOnSuccessListener {
+                    val ratingList = it.toObjects(Rating::class.java)
+                    video.ratings = ratingList
+                    videos.add(video)
+                    youtubeVideoLiveData.postValue(videos)
+                }
             }
-            youtubeVideoLiveData.postValue(videos)
         }
     }
 
