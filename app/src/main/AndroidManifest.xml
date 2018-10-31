@@ -45,21 +45,44 @@
         <activity
             android:name=".ui.content.ContentActivity"
             android:label="@string/app_name" />
-
-        <activity android:name=".ui.playvideo.PlayVideoActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/NoTitleActivity"/>
+        <activity
+            android:name=".ui.playvideo.PlayVideoActivity"
+            android:theme="@style/NoTitleActivity"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="http"
+                    android:host="doboadam.hu"/>
+                <data
+                    android:scheme="https"
+                    android:host="doboadam.hu"/>
+            </intent-filter>
+        </activity>
 
         <provider
+            android:name=".MySliceProvider"
             android:authorities="hu.doboadam.howtube"
-            android:name=".ui.slices.MySliceProvider"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.app.slice.category.SLICE"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.app.slice.category.SLICE" />
             </intent-filter>
         </provider>
+        <provider
+            android:name=".MySliceProvider"
+            android:authorities="hu.doboadam.howtube"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.app.slice.category.SLICE" />
+
+            </intent-filter>
+        </provider>
     </application>
 
 </manifest>

@@ -19,6 +19,7 @@ import hu.doboadam.howtube.model.Rating
 import hu.doboadam.howtube.model.YoutubeVideo
 import kotlinx.android.synthetic.main.activity_play_video.*
 import timber.log.Timber
+import java.net.URI
 
 class PlayVideoActivity : AppCompatActivity() {
 
@@ -33,7 +34,15 @@ class PlayVideoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play_video)
-        videoId = intent.getStringExtra(VIDEO_ID)
+        val uri = intent.data
+        if(uri?.path != null){
+            videoId = uri.path!!.removePrefix("/")
+        } else {
+            if(intent.hasExtra(VIDEO_ID)){
+                videoId = intent.getStringExtra(VIDEO_ID)
+            }
+        }
+
         viewModel = ViewModelProviders.of(this, PlayVideoViewModelFactory(videoId)).get(PlayVideoViewModel::class.java)
         observeViewmodel()
         addFragmentWithTag(YouTubePlayerSupportFragment.newInstance(), R.id.youtubePlayerContainer, YouTubePlayerSupportFragment::class.java.simpleName)
@@ -75,10 +84,16 @@ class PlayVideoActivity : AppCompatActivity() {
     private fun refreshRatings(ratings: List<Rating>) {
         val rating = ratings.firstOrNull { it.author == getFirebaseUserId() }
         ratingBar.rating = when (rating) {
-            null -> 0F
-            else -> rating.rating
+            null -> {
+                ratingText.text = "0"
+                0F
+            }
+            else -> {
+                ratingText.text = ratings.map { it.rating }.average().toString()
+                rating.rating
+            }
         }
-        ratingText.text = ratings.map { it.rating }.average().toString()
+
         usersText.text = when {
             ratings.size > 1 -> getString(R.string.users, ratings.size)
             else -> getString(R.string.user, ratings.size)
