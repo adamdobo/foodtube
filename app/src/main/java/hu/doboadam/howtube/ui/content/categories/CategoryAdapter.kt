@@ -1,5 +1,6 @@
 package hu.doboadam.howtube.ui.content.categories
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,13 @@ class CategoryAdapter(private val categoryList: MutableList<Category>, private v
             categoryName.text = category.name
             itemView.setOnClickListener {
                 listener(category)
+            }
+            when(category.name){
+                "Desserts" -> categoryImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dessert))
+                "Soups" -> categoryImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.soup))
+                "Meatlover" -> categoryImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.meatlover))
+                "Vegetarian" -> categoryImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.vegetarian))
+                "Pasta" -> categoryImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.pasta))
             }
         }
 

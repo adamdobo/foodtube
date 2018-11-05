@@ -3,11 +3,15 @@ package hu.doboadam.howtube.ui.content.categories
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import com.google.firebase.appindexing.FirebaseAppIndex
+import com.google.firebase.appindexing.Indexable
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 import hu.doboadam.howtube.extensions.convertToYoutubeVideo
+import hu.doboadam.howtube.extensions.getMostFittingThumbnailUrl
 import hu.doboadam.howtube.extensions.isYoutubeVideo
 import hu.doboadam.howtube.model.Category
+import hu.doboadam.howtube.model.YoutubeThumbnails
 import hu.doboadam.howtube.model.YoutubeVideo
 import hu.doboadam.howtube.network.RetrofitInstance
 import hu.doboadam.howtube.network.services.YoutubeApi
@@ -19,6 +23,7 @@ import timber.log.Timber
 class CategoryListViewModel : BaseViewModel() {
 
     private var categoryListLiveData: MutableLiveData<List<Category>> = MutableLiveData()
+    private var _uploadSucceeded =  MutableLiveData<Any>()
 
     companion object {
         private const val CATEGORIES = "categories"
@@ -27,6 +32,8 @@ class CategoryListViewModel : BaseViewModel() {
         private val REGEX = "((?<=([vV])/)|(?<=be/)|(?<=([?&])v=)|(?<=embed/))([\\w-]+).".toRegex()
     }
     fun getCategoryListLiveData(): LiveData<List<Category>> = categoryListLiveData
+    val uploadSucceeded: LiveData<Any>
+        get() = _uploadSucceeded
 
     override fun startListeningToDbChanges() {
         listener = db.collection(CATEGORIES)
@@ -55,6 +62,8 @@ class CategoryListViewModel : BaseViewModel() {
                             video.categoryId = categoryId
                             db.collection(VIDEOS).document(video.id)
                                     .set(video)
+                            updateFirebaseAppIndex(video)
+                            _uploadSucceeded.value = null
                         } else {
                             //TODO: display error snackbar
                         }
@@ -64,6 +73,22 @@ class CategoryListViewModel : BaseViewModel() {
         } else {
             //TODO: display error
         }
+    }
+
+    private fun getVideoImageUrl(thumbnail: YoutubeThumbnails): String {
+        return when {
+            thumbnail.maxres.url != "" -> thumbnail.maxres.url
+            else -> thumbnail.high.url
+        }
+    }
+
+    private fun updateFirebaseAppIndex(video: YoutubeVideo) {
+        val firebaseAppIndex = FirebaseAppIndex.getInstance()
+        firebaseAppIndex.update(Indexable.Builder()
+                .setUrl("http://doboadam.hu/recipe/${video.id}")
+                .setName(video.snippet.title)
+                .setImage(video.snippet.thumbnails.getMostFittingThumbnailUrl())
+                .build())
     }
 
 }

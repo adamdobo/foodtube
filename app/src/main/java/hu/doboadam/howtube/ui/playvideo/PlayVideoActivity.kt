@@ -11,7 +11,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import hu.doboadam.howtube.R
-import hu.doboadam.howtube.R.id.*
 import hu.doboadam.howtube.extensions.addFragmentWithTag
 import hu.doboadam.howtube.extensions.getFirebaseUserId
 import hu.doboadam.howtube.model.Comment
@@ -19,7 +18,6 @@ import hu.doboadam.howtube.model.Rating
 import hu.doboadam.howtube.model.YoutubeVideo
 import kotlinx.android.synthetic.main.activity_play_video.*
 import timber.log.Timber
-import java.net.URI
 
 class PlayVideoActivity : AppCompatActivity() {
 
@@ -36,7 +34,7 @@ class PlayVideoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_play_video)
         val uri = intent.data
         if(uri?.path != null){
-            videoId = uri.path!!.removePrefix("/")
+            videoId = uri.path!!.removePrefix("/recipe/")
         } else {
             if(intent.hasExtra(VIDEO_ID)){
                 videoId = intent.getStringExtra(VIDEO_ID)

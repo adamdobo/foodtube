@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -80,6 +81,9 @@ class CategoryListFragment : BaseViewModelFragment() {
                 adapter.setItems(it)
                 addVideo.show()
             }
+        })
+        viewModel.uploadSucceeded.observe(this, Observer {
+            Snackbar.make(rootLayout, "Video successfully uploaded!", Snackbar.LENGTH_SHORT).show()
         })
     }
 

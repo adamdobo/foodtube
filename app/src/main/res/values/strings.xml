@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HowTube</string>
+    <string name="app_name">FoodTube</string>
     <string name="facebook_app_id">241956826666146</string>
     <string name="fb_login_protocol_scheme">fb241956826666146</string>
     <string name="title_activity_content">ContentActivity</string>
