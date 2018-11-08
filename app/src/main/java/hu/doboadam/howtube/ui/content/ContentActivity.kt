@@ -22,18 +22,19 @@ import hu.doboadam.howtube.ui.playvideo.PlayVideoActivity
 import kotlinx.android.synthetic.main.activity_content.*
 import java.util.concurrent.TimeUnit
 
-class ContentActivity : AppCompatActivity(), VideoListFragment.OnVideoClickListener, CategoryListFragment.OnCategoryClickedListener {
-
+class ContentActivity : AppCompatActivity(), ContentFragment.OnBackPressedListener, VideoListFragment.OnVideoClickListener, CategoryListFragment.OnCategoryClickedListener {
     private lateinit var viewModel: ContentViewModel
     private lateinit var countDownTimer: CountDownTimer
+    private lateinit var adapter: MyViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_content)
+        adapter = MyViewPagerAdapter(this, supportFragmentManager)
+        viewPager.adapter = adapter
+        tabLayout.setupWithViewPager(viewPager)
         viewModel = ViewModelProviders.of(this).get(ContentViewModel::class.java)
-
         observeViewModel()
-        replaceFragment(CategoryListFragment.newInstance(), R.id.fragmentContainer, false)
     }
 
     private fun observeViewModel() {
@@ -74,16 +75,6 @@ class ContentActivity : AppCompatActivity(), VideoListFragment.OnVideoClickListe
         })
     }
 
-    override fun onVideoClicked(video: YoutubeVideo) {
-        val intent = Intent(this, PlayVideoActivity::class.java)
-        intent.putExtra(PlayVideoActivity.VIDEO_ID, video.id)
-        startActivity(intent)
-    }
-
-    override fun onCategoryClicked(id: Int) {
-        replaceFragment(VideoListFragment.newInstance(id, null), R.id.fragmentContainer, true)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.content_menu, menu)
         return true
@@ -114,10 +105,24 @@ class ContentActivity : AppCompatActivity(), VideoListFragment.OnVideoClickListe
 
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
+        if(viewPager.currentItem == 0){
+            adapter.contentFragment.onBackPressed()
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun defaultBack() {
+        super.onBackPressed()
+    }
+
+    override fun onVideoClicked(video: YoutubeVideo) {
+        val intent = Intent(this, PlayVideoActivity::class.java)
+        intent.putExtra(PlayVideoActivity.VIDEO_ID, video.id)
+        startActivity(intent)
+    }
+
+    override fun onCategoryClicked(id: Int) {
+        adapter.contentFragment.replaceFragment(VideoListFragment.newInstance(id, null), R.id.fragmentContainer, true)
     }
 }

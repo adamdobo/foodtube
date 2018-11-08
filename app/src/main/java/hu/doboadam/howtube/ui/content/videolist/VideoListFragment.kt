@@ -14,7 +14,7 @@ import hu.doboadam.howtube.ui.BaseViewModelFragment
 import kotlinx.android.synthetic.main.fragment_videolist.*
 import java.util.*
 
-class VideoListFragment : BaseViewModelFragment() {
+class  VideoListFragment : BaseViewModelFragment() {
 
     override val TAG: String = "VideoListFragment"
     private lateinit var adapter: YoutubeVideoAdapter

@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import hu.doboadam.howtube.R
 import hu.doboadam.howtube.extensions.createDialog
 import hu.doboadam.howtube.model.Category
+import hu.doboadam.howtube.model.Result
 import hu.doboadam.howtube.ui.BaseViewModelFragment
 import kotlinx.android.synthetic.main.dialog_add_new_video.view.*
 import kotlinx.android.synthetic.main.fragment_category_list.*
@@ -82,8 +83,15 @@ class CategoryListFragment : BaseViewModelFragment() {
                 addVideo.show()
             }
         })
-        viewModel.uploadSucceeded.observe(this, Observer {
-            Snackbar.make(rootLayout, "Video successfully uploaded!", Snackbar.LENGTH_SHORT).show()
+        viewModel.uploadSucceeded.observe(this, Observer {result ->
+            result?.also {
+                val message = when(it) {
+                    Result.Success -> getString(R.string.upload_success)
+                    Result.Failure -> getString(R.string.upload_failed)
+
+                }
+                Snackbar.make(rootLayout, message, Snackbar.LENGTH_LONG).show()
+            }
         })
     }
 

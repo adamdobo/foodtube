@@ -29,6 +29,16 @@ fun AppCompatActivity.replaceFragment(fragment: BaseViewModelFragment, container
     transaction.commit()
 }
 
+fun Fragment.replaceFragment(fragment: BaseViewModelFragment, containerId: Int, withBackStack: Boolean) {
+    val transaction = childFragmentManager.beginTransaction()
+            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.animator.fade_in, android.R.animator.fade_out)
+            .replace(containerId, fragment)
+    if (withBackStack) {
+        transaction.addToBackStack(fragment.TAG)
+    }
+    transaction.commit()
+}
+
 fun AppCompatActivity.addFragmentWithTag(fragment: Fragment, containerId: Int, tag: String) {
     supportFragmentManager.beginTransaction()
             .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)

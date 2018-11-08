@@ -18,17 +18,21 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="http"
                     android:host="doboadam.hu"
-                    android:pathPrefix="/start"/>
+                    android:pathPrefix="/start"
+                    android:scheme="http" />
                 <data
-                    android:scheme="https"
                     android:host="doboadam.hu"
-                    android:pathPrefix="/start"/>
+                    android:pathPrefix="/start"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
@@ -62,16 +66,18 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="http"
                     android:host="doboadam.hu"
-                    android:pathPrefix="/recipe"/>
+                    android:pathPrefix="/recipe"
+                    android:scheme="http" />
                 <data
-                    android:scheme="https"
                     android:host="doboadam.hu"
-                    android:pathPrefix="/recipe"/>
+                    android:pathPrefix="/recipe"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
@@ -81,9 +87,14 @@
             android:exported="true">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.app.slice.category.SLICE" />
             </intent-filter>
         </provider>
+
+        <activity
+            android:name=".ui.content.ContentViewPagerActivity"
+            android:label="@string/title_activity_content_view_pager"></activity>
     </application>
 
 </manifest>
