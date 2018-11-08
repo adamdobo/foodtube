@@ -1,12 +1,11 @@
 package hu.doboadam.howtube.ui.login
 
-import android.app.slice.SliceManager
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -18,24 +17,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.api.Context
-import com.google.firebase.appindexing.FirebaseAppIndex
-import com.google.firebase.appindexing.Indexable
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import hu.doboadam.howtube.R
+import hu.doboadam.howtube.model.Result
+import hu.doboadam.howtube.repository.SharedPrefRepository
+import hu.doboadam.howtube.ui.BaseViewModelActivity
 import hu.doboadam.howtube.ui.content.ContentActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseViewModelActivity() {
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN: Int = 100
     private lateinit var callbackManager: CallbackManager
+    private lateinit var sharedPrefRepository: SharedPrefRepository
+    private lateinit var viewModel: LoginViewModel
 
     companion object {
         private const val EMAIL = "email"
@@ -45,8 +46,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        addAppToFirebaseIndex()
         grantSlicePermissions()
+        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        observeViewModel()
+        updateFirebaseIndex()
         firebaseAuth = FirebaseAuth.getInstance()
         val googleSingInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -77,12 +80,19 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun addAppToFirebaseIndex() {
-        FirebaseAppIndex.getInstance().update(Indexable.Builder()
-                .setUrl("https://doboadam.hu/start")
-                .setName("FoodTube")
-                .setKeywords("food", "recipe", "recipes", "cooking", "food videos", "recipe videos")
-                .build())
+    private fun observeViewModel() {
+        viewModel.indexingResult.observe(this, Observer {value ->
+            value?.also {
+                if(it == Result.Success){
+                    sharedPrefRepository.setFirstRun(false)
+                }
+            }
+        })
+    }
+
+    private fun updateFirebaseIndex() {
+        sharedPrefRepository = SharedPrefRepository(this)
+        viewModel.updateAppIndex(sharedPrefRepository.isFirstRun())
     }
 
     private fun grantSlicePermissions() {
@@ -150,5 +160,13 @@ class LoginActivity : AppCompatActivity() {
     private fun advance() {
         finish()
         startActivity(Intent(this, ContentActivity::class.java))
+    }
+
+    override fun startListeningToDb() {
+        viewModel.startListeningToDbChanges()
+    }
+
+    override fun stopListeningToDb() {
+        viewModel.stopListeningToDbChanges()
     }
 }

@@ -3,11 +3,9 @@ package hu.doboadam.howtube.ui.playvideo
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import hu.doboadam.howtube.model.Category
-import hu.doboadam.howtube.model.Comment
-import hu.doboadam.howtube.model.Rating
-import hu.doboadam.howtube.model.YoutubeVideo
+import hu.doboadam.howtube.model.*
 import hu.doboadam.howtube.ui.BaseViewModel
 import timber.log.Timber
 
@@ -26,31 +24,27 @@ class PlayVideoViewModel(private val videoId: String) : BaseViewModel() {
     val getRatingsLiveData: LiveData<List<Rating>> = ratingsLiveData
 
 
-
     override fun startListeningToDbChanges() {
-        listener = db.collection(VIDEO_PATH).document(videoId)
-                .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
-                    if(firebaseFirestoreException != null){
-                        Timber.e("Listen failed with $firebaseFirestoreException")
-                    }
-                    if(documentSnapshot != null && documentSnapshot.exists()){
-                        youtubeVideoLiveData.postValue(documentSnapshot.toObject(YoutubeVideo::class.java))
-                    }
-                }
-        ratingListener = db.collection(VIDEO_PATH)
-                .document(videoId)
-                .collection(RATING_PATH)
-                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                    if (firebaseFirestoreException != null) {
-                        Timber.e("Listening failed with $firebaseFirestoreException")
-                        return@addSnapshotListener
-                    }
-                    val ratings = emptyList<Rating>().toMutableList()
-                    for (docs in querySnapshot!!) {
-                        ratings.add(docs.toObject(Rating::class.java))
-                    }
-                    ratingsLiveData.postValue(ratings)
-                }
+        listener = FirestoreRepository.listenToDocumentChanges("$VIDEO_PATH/$videoId") { documentSnapshot, firebaseFirestoreException ->
+            if (firebaseFirestoreException != null) {
+                Timber.e("Listen failed with $firebaseFirestoreException")
+            }
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                youtubeVideoLiveData.postValue(documentSnapshot.toObject(YoutubeVideo::class.java))
+            }
+
+        }
+        ratingListener = FirestoreRepository.listenToCollectionChanges("$VIDEO_PATH/$videoId/$RATING_PATH") { querySnapshot, firebaseFirestoreException ->
+            if (firebaseFirestoreException != null) {
+                Timber.e("Listening failed with $firebaseFirestoreException")
+                return@listenToCollectionChanges
+            }
+            val ratings = emptyList<Rating>().toMutableList()
+            for (docs in querySnapshot!!) {
+                ratings.add(docs.toObject(Rating::class.java))
+            }
+            ratingsLiveData.postValue(ratings)
+        }
     }
 
 
@@ -63,17 +57,10 @@ class PlayVideoViewModel(private val videoId: String) : BaseViewModel() {
         val map = mapOf("author" to comment.author,
                 "message" to comment.message,
                 "timeStamp" to comment.timeStamp)
-        db.collection(VIDEO_PATH)
-                .document(videoId)
-                .update(COMMENT_PATH, FieldValue.arrayUnion(map))
-
+        FirestoreRepository.updateDocumentWithCustomId("$VIDEO_PATH/$videoId", COMMENT_PATH, FieldValue.arrayUnion(map))
     }
 
     fun submitRating(firebaseUserId: String?, fl: Float) {
-        db.collection(VIDEO_PATH)
-                .document(videoId)
-                .collection(RATING_PATH)
-                .document(firebaseUserId!!)
-                .set(Rating(firebaseUserId, fl))
+        FirestoreRepository.addDocumentWithCustomId("$VIDEO_PATH/$videoId/$RATING_PATH/$firebaseUserId", Rating(firebaseUserId!!, fl))
     }
 }

@@ -33,10 +33,10 @@ class PlayVideoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play_video)
         val uri = intent.data
-        if(uri?.path != null){
+        if (uri?.path != null) {
             videoId = uri.path!!.removePrefix("/recipe/")
         } else {
-            if(intent.hasExtra(VIDEO_ID)){
+            if (intent.hasExtra(VIDEO_ID)) {
                 videoId = intent.getStringExtra(VIDEO_ID)
             }
         }
@@ -45,8 +45,15 @@ class PlayVideoActivity : AppCompatActivity() {
         observeViewmodel()
         addFragmentWithTag(YouTubePlayerSupportFragment.newInstance(), R.id.youtubePlayerContainer, YouTubePlayerSupportFragment::class.java.simpleName)
         initYoutubePlayer()
-        submitButton.setOnClickListener {
-            viewModel.submitComment(Comment(getFirebaseUserId(), commentEditText.text.toString(), System.currentTimeMillis()))
+        submitComment.setOnClickListener {
+            if (commentEditText.text.isNullOrBlank()) {
+                commentEditLayout.error = getString(R.string.cannot_be_empty)
+            } else {
+                commentEditLayout.error = null
+                viewModel.submitComment(Comment(getFirebaseUserId(), commentEditText.text.toString(), System.currentTimeMillis()))
+                commentEditText.text?.clear()
+            }
+
         }
         ratingBar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { _, fl: Float, _ ->
             viewModel.submitRating(getFirebaseUserId(), fl)
@@ -56,7 +63,7 @@ class PlayVideoActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = CommentListAdapter(emptyList<Comment>().toMutableList())
-        commentList.layoutManager = object: LinearLayoutManager(this) {
+        commentList.layoutManager = object : LinearLayoutManager(this) {
             override fun canScrollVertically(): Boolean {
                 return false
             }
@@ -104,7 +111,7 @@ class PlayVideoActivity : AppCompatActivity() {
     }
 
     private fun refreshData(video: YoutubeVideo) {
-        with(video){
+        video.apply {
             videoTitle.text = snippet.title
             adapter.refreshItems(comments)
         }
@@ -113,9 +120,9 @@ class PlayVideoActivity : AppCompatActivity() {
     private fun initYoutubePlayer() {
         val youTubePlayerSupportFragment =
                 supportFragmentManager.findFragmentByTag(YouTubePlayerSupportFragment::class.java.simpleName) as YouTubePlayerSupportFragment
-        youTubePlayerSupportFragment.initialize(getString(R.string.api_key), object: YouTubePlayer.OnInitializedListener {
+        youTubePlayerSupportFragment.initialize(getString(R.string.api_key), object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(provider: YouTubePlayer.Provider, player: YouTubePlayer, wasRestored: Boolean) {
-                if(!wasRestored){
+                if (!wasRestored) {
                     player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT)
                     player.loadVideo(videoId)
                 }

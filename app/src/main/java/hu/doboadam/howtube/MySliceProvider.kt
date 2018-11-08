@@ -2,21 +2,16 @@ package hu.doboadam.howtube
 
 import android.app.PendingIntent
 import android.content.ContentResolver
-import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Icon
 import android.net.Uri
 import android.support.v4.graphics.drawable.IconCompat
 import androidx.slice.Slice
-import androidx.slice.SliceManager
 import androidx.slice.SliceProvider
 import androidx.slice.builders.ListBuilder
-import androidx.slice.builders.ListBuilder.*
 import androidx.slice.builders.SliceAction
-import androidx.slice.core.SliceHints
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
-import hu.doboadam.howtube.extensions.getMostFittingThumbnailUrl
+import hu.doboadam.howtube.model.FirestoreRepository
 import hu.doboadam.howtube.model.YoutubeVideo
 import hu.doboadam.howtube.ui.login.LoginActivity
 import hu.doboadam.howtube.ui.playvideo.PlayVideoActivity
@@ -37,9 +32,8 @@ class MySliceProvider : SliceProvider() {
 
 
     private fun getRandomRecipe() {
-        if(recipe == null) {
-            val db = FirebaseFirestore.getInstance()
-            db.collection("videos").get().addOnSuccessListener {
+        if (recipe == null) {
+            FirestoreRepository.getCollection("videos").addOnSuccessListener {
                 recipe = if (it.isEmpty) {
                     null
                 } else {
@@ -60,7 +54,7 @@ class MySliceProvider : SliceProvider() {
         if (intent == null) return uriBuilder.build()
         val data = intent.data
         if (data != null && data.path != null) {
-            val path = data.path.replace("/", "")
+            val path = data.path?.replace("/", "")
             uriBuilder = uriBuilder.path(path)
         }
         val context = context
@@ -84,7 +78,7 @@ class MySliceProvider : SliceProvider() {
             // Only bind data that is currently available in memory.
             getRandomRecipe()
             val intent = Intent(context, PlayVideoActivity::class.java)
-            if(recipe != null) {
+            if (recipe != null) {
                 intent.putExtra(VIDEO_ID, recipe?.id)
             }
             ListBuilder(context, sliceUri, ListBuilder.INFINITY)
@@ -123,7 +117,7 @@ class MySliceProvider : SliceProvider() {
     }
 
     private fun getActivityAction(intent: Intent): SliceAction {
-        return if(recipe != null) {
+        return if (recipe != null) {
             SliceAction.create(
                     PendingIntent.getActivity(context, 0, intent, 0),
                     IconCompat.createWithResource(context, android.R.drawable.ic_lock_power_off),
