@@ -18,4 +18,11 @@
     <string name="details">Details</string>
     <string name="got_it">Got it</string>
     <string name="go_to_category">Go to category</string>
+    <string name="sign_in">Sign in</string>
+    <string name="cannot_be_empty">This field cannot be empty!</string>
+    <string name="upload_success">Video successfully uploaded!</string>
+    <string name="upload_failed">Video upload failed, please try again later.</string>
+    <string name="title_activity_content_view_pager">ContentViewPagerActivity</string>
+    <string name="uploaded_videos">Uploaded videos</string>
+    <string name="youtube_videos">Youtube videos</string>
 </resources>
