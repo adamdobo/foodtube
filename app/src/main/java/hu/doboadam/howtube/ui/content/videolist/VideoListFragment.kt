@@ -61,7 +61,7 @@ class  VideoListFragment : BaseViewModelFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.getYoutubeLiveData().observe(this, Observer<List<YoutubeVideo>> { value ->
+        viewModel.getYoutubeLiveData().observe(this, Observer { value ->
             value?.let {
                 adapter.setList(it, startDate)
             }

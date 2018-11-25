@@ -12,10 +12,16 @@ import kotlinx.coroutines.launch
 
 class BrowseYoutubeVideosViewModel : BaseViewModel() {
 
-    private val _videoList: MutableLiveData<YoutubeVideoListResponse> = MutableLiveData()
+    private lateinit var _videoList: MutableLiveData<YoutubeVideoListResponse>
 
     val videoList: LiveData<YoutubeVideoListResponse>
-        get() = _videoList
+        get() {
+            if (!::_videoList.isInitialized) {
+                _videoList = MutableLiveData()
+                getYoutubeVideos()
+            }
+            return _videoList
+        }
 
     companion object {
         private val api: YoutubeApi = RetrofitInstance.getYoutubeRetrofitInstance().create(YoutubeApi::class.java)

@@ -1,6 +1,5 @@
 package hu.doboadam.howtube.model
 
-import android.app.DownloadManager
 import com.google.firebase.firestore.*
 
 

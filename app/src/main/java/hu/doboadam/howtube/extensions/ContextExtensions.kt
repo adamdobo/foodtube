@@ -48,5 +48,5 @@ fun AppCompatActivity.addFragmentWithTag(fragment: Fragment, containerId: Int, t
     supportFragmentManager.executePendingTransactions()
 }
 
-fun getFirebaseUserId() =
+fun AppCompatActivity.getFirebaseUserId() =
         FirebaseAuth.getInstance().currentUser?.uid

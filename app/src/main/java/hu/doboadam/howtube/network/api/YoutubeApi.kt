@@ -4,7 +4,6 @@ import android.net.Uri
 import hu.doboadam.howtube.model.YoutubeVideoListResponse
 import hu.doboadam.howtube.model.YoutubeVideoResponse
 import kotlinx.coroutines.Deferred
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

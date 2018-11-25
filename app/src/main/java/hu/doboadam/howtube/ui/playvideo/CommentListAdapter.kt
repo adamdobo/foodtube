@@ -33,7 +33,7 @@ class CommentListAdapter(private val commentList: MutableList<Comment>) : Recycl
             with(comment){
                 commentMessage.text = message
                 commentAuthor.text = author
-                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                 commentTime.text = sdf.format(Date(timeStamp))
             }
         }

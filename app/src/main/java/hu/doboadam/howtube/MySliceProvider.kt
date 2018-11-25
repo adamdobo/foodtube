@@ -9,7 +9,6 @@ import androidx.slice.Slice
 import androidx.slice.SliceProvider
 import androidx.slice.builders.ListBuilder
 import androidx.slice.builders.SliceAction
-import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import hu.doboadam.howtube.model.FirestoreRepository
 import hu.doboadam.howtube.model.YoutubeVideo

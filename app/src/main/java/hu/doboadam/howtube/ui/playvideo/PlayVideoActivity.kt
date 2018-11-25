@@ -110,6 +110,11 @@ class PlayVideoActivity : AppCompatActivity() {
         viewModel.startListeningToDbChanges()
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.stopListeningToDbChanges()
+    }
+
     private fun refreshData(video: YoutubeVideo) {
         video.apply {
             videoTitle.text = snippet.title

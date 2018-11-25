@@ -17,15 +17,15 @@ class ContentViewModel: BaseViewModel() {
 
     override fun startListeningToDbChanges() {
         super.startListeningToDbChanges()
-       /* listener = FirestoreRepository.listenToCollectionChanges("contest") {
+        listener = FirestoreRepository.listenToCollectionChanges("contest") { querySnapshot: QuerySnapshot?, firebaseFirestoreException: FirebaseFirestoreException? ->
             if (firebaseFirestoreException != null) {
                 Timber.e("Listening failed with $firebaseFirestoreException")
-                return@addSnapshotListener
+                return@listenToCollectionChanges
             }
             if (!querySnapshot?.isEmpty!!) {
                 contestLiveData.postValue(querySnapshot.documents[0].toObject(Contest::class.java))
             }
-        } */
+        }
     }
 
 }

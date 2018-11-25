@@ -59,17 +59,17 @@ class CategoryListViewModel : BaseViewModel() {
                     if (response.body()!!.items.any()) {
                         val video = response.body()!!.convertToYoutubeVideo()
                         video.categoryId = categoryId
-                        FirestoreRepository.addDocumentWithCustomId("$VIDEOS/$video.id", video)
-                        _uploadSucceeded.value = Result.Success
+                        FirestoreRepository.addDocumentWithCustomId("$VIDEOS/${video.id}", video)
+                        _uploadSucceeded.postValue(Result.Success)
                     } else {
-                        _uploadSucceeded.value = Result.Failure
+                        _uploadSucceeded.postValue(Result.Failure)
                     }
                 } else {
-                    _uploadSucceeded.value = Result.Failure
+                    _uploadSucceeded.postValue(Result.Failure)
                 }
             }
         } else {
-            _uploadSucceeded.value = Result.Failure
+            _uploadSucceeded.postValue(Result.Failure)
         }
     }
 }

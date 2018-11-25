@@ -34,9 +34,6 @@ class BrowseYoutubeVideosFragment : BaseViewModelFragment() {
         viewModel = ViewModelProviders.of(this).get(BrowseYoutubeVideosViewModel::class.java)
         initRecyclerView()
         observeViewModel()
-        if(adapter.itemCount <= 0) {
-            viewModel.getYoutubeVideos()
-        }
     }
 
     private fun initRecyclerView() {

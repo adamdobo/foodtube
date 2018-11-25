@@ -3,7 +3,10 @@ package hu.doboadam.howtube.ui
 import android.arch.lifecycle.ViewModel
 import com.google.firebase.appindexing.FirebaseAppIndex
 import com.google.firebase.appindexing.Indexable
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.QuerySnapshot
 import hu.doboadam.howtube.extensions.getMostFittingThumbnailUrl
 import hu.doboadam.howtube.model.FirestoreRepository
 import hu.doboadam.howtube.model.YoutubeVideo
@@ -11,7 +14,7 @@ import timber.log.Timber
 
 abstract class BaseViewModel : ViewModel() {
     protected var listener: ListenerRegistration = ListenerRegistration { }
-    private lateinit var appIndexListener: ListenerRegistration
+    private var appIndexListener: ListenerRegistration = ListenerRegistration { }
 
 
     open fun startListeningToDbChanges() {
@@ -19,8 +22,8 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     open fun stopListeningToDbChanges() {
-        listener.remove()
         appIndexListener.remove()
+        listener.remove()
     }
 
     private fun updateIndexOnVideoUpload() {

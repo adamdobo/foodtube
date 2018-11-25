@@ -34,6 +34,7 @@ class CategoryAdapter(private val categoryList: MutableList<Category>, private v
             itemView.setOnClickListener {
                 listener(category)
             }
+
             when(category.name){
                 "Desserts" -> categoryImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dessert))
                 "Soups" -> categoryImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.soup))
@@ -44,4 +45,6 @@ class CategoryAdapter(private val categoryList: MutableList<Category>, private v
         }
 
     }
+
 }
+

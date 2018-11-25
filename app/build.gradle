@@ -35,7 +35,7 @@ dependencies {
     //Facebook login
     implementation 'com.facebook.android:facebook-login:4.36.1'
 //Firebase
-    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-core:16.0.5'
     implementation 'com.google.firebase:firebase-auth:16.0.5'
     implementation 'com.google.firebase:firebase-firestore:17.1.2'
     implementation 'com.google.firebase:firebase-appindexing:16.0.2'

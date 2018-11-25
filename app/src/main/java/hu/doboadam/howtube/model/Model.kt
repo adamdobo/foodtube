@@ -3,28 +3,19 @@ package hu.doboadam.howtube.model
 import com.google.firebase.Timestamp
 import java.util.*
 
-data class PageInfo(val totalResults: Int, val resultsPerPage: Int)
 
+data class YoutubeVideo(val id: String = "", val snippet: YoutubeVideoSnippet = YoutubeVideoSnippet(),
+                        val contentDetails: YoutubeVideoContentDetails = YoutubeVideoContentDetails(), val comments: List<Comment> = emptyList(), var uploadDate: Timestamp = Timestamp(Date()),
+                        var ratings: List<Rating> = emptyList(),
+                        var categoryId: Int = 0)
 
-data class YoutubeVideo(val kind: String = "", val etag: String = "",
-                        val id: String = "", val snippet: YoutubeVideoSnippet = YoutubeVideoSnippet(),
-                        val contentDetails: YoutubeVideoContentDetails = YoutubeVideoContentDetails(), val comments: List<Comment> = emptyList(),
-                        var categoryId: Int = 0, var uploadDate: Timestamp = Timestamp(Date()),
-                        var ratings: List<Rating> = emptyList())
-
-data class YoutubeVideoOnlySnippet(val kind: String = "", val etag: String = "",
+data class YoutubeVideoOnlySnippet(val kind: String = "",
                                    val id: YoutubeVideoId = YoutubeVideoId(), val snippet: YoutubeVideoSnippet = YoutubeVideoSnippet())
 
 data class YoutubeVideoId(val kind: String = "", val videoId: String = "")
 
-data class YoutubeVideoSnippet(val publishedAt: String = "", val channelId: String = "",
-                               val title: String = "", val description: String = "",
-                               val thumbnails: YoutubeThumbnails = YoutubeThumbnails(), val channelTitle: String = "",
-                               val tags: List<String> = emptyList(), val categoryId: String = "",
-                               val liveBroadcastContent: String = "", val defaultLanguage: String = "",
-                               val localized: YoutubeLocalizedSnippet = YoutubeLocalizedSnippet(), val defaultAudioLanguage: String = "")
-
-data class YoutubeLocalizedSnippet(val title: String = "", val description: String = "")
+data class YoutubeVideoSnippet(val title: String = "",
+                               val thumbnails: YoutubeThumbnails = YoutubeThumbnails())
 
 data class YoutubeThumbnails(val default: YoutubeThumbnail = YoutubeThumbnail(), val medium: YoutubeThumbnail = YoutubeThumbnail(),
                              val high: YoutubeThumbnail = YoutubeThumbnail(), val standard: YoutubeThumbnail = YoutubeThumbnail(),
@@ -33,11 +24,9 @@ data class YoutubeThumbnails(val default: YoutubeThumbnail = YoutubeThumbnail(),
 data class YoutubeThumbnail(val url: String = "", val width: Int = 0,
                             val height: Int = 0)
 
-data class YoutubeVideoContentDetails(val duration: String = "", val dimension: String = "",
-                                      val definition: String = "", val caption: String = "",
-                                      val licensedContent: Boolean = false, val projection: String = "")
+data class YoutubeVideoContentDetails(val duration: String = "")
 
-data class Comment(val author: String? = "", val message: String = " ", val timeStamp : Long = 0)
+data class Comment(val author: String? = "", val message: String = " ", val timeStamp: Long = 0)
 
 data class Rating(val author: String = "", val rating: Float = 0f)
 

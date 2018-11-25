@@ -57,7 +57,7 @@ class LoginActivity : BaseViewModelActivity() {
                 .build()
         callbackManager = CallbackManager.Factory.create()
         facebookLoginButton.setReadPermissions(listOf(EMAIL, PUBLIC_PROFILE))
-        facebookLoginButton.registerCallback(callbackManager, object: FacebookCallback<LoginResult> {
+        facebookLoginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onCancel() {
                 //Do nothing
             }
@@ -81,9 +81,9 @@ class LoginActivity : BaseViewModelActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.indexingResult.observe(this, Observer {value ->
+        viewModel.indexingResult.observe(this, Observer { value ->
             value?.also {
-                if(it == Result.Success){
+                if (it == Result.Success) {
                     sharedPrefRepository.setFirstRun(false)
                 }
             }
@@ -105,7 +105,7 @@ class LoginActivity : BaseViewModelActivity() {
     private fun handleFacebookAccessToken(accessToken: AccessToken) {
         val credential = FacebookAuthProvider.getCredential(accessToken.token)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
-            if(it.isSuccessful){
+            if (it.isSuccessful) {
                 advance()
             } else {
                 Snackbar.make(mainLayout, "Login failed :(", Snackbar.LENGTH_LONG).show()
@@ -123,16 +123,16 @@ class LoginActivity : BaseViewModelActivity() {
         }
     }
 
-    private fun signInWithGoogle(){
+    private fun signInWithGoogle() {
         startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == RC_SIGN_IN){
+        if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
             try {
-                if(task.isSuccessful) {
+                if (task.isSuccessful) {
                     val account = task.result
                     firebaseAuthWithGoogle(account)
                 }
@@ -149,7 +149,7 @@ class LoginActivity : BaseViewModelActivity() {
         val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener {
-                    if(it.isSuccessful){
+                    if (it.isSuccessful) {
                         advance()
                     } else {
                         Snackbar.make(mainLayout, "Login failed :(", Snackbar.LENGTH_LONG).show()

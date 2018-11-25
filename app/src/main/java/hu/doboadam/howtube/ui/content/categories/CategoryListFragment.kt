@@ -74,7 +74,7 @@ class CategoryListFragment : BaseViewModelFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.getCategoryListLiveData().observe(this, Observer { value ->
+        viewModel.getCategoryListLiveData().observe(this, Observer<List<Category>> { value ->
             value?.let {
                 if(dialog == null){
                     initDialog(it)
@@ -83,7 +83,7 @@ class CategoryListFragment : BaseViewModelFragment() {
                 addVideo.show()
             }
         })
-        viewModel.uploadSucceeded.observe(this, Observer {result ->
+        viewModel.uploadSucceeded.observe(this, Observer<Result> { result ->
             result?.also {
                 val message = when(it) {
                     Result.Success -> getString(R.string.upload_success)

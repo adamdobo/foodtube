@@ -3,9 +3,11 @@ package hu.doboadam.howtube.ui.playvideo
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import hu.doboadam.howtube.model.*
+import hu.doboadam.howtube.model.Comment
+import hu.doboadam.howtube.model.FirestoreRepository
+import hu.doboadam.howtube.model.Rating
+import hu.doboadam.howtube.model.YoutubeVideo
 import hu.doboadam.howtube.ui.BaseViewModel
 import timber.log.Timber
 

@@ -10,9 +10,9 @@ class SharedPrefRepository(context: Context) {
     }
 
     fun setFirstRun(firstRun: Boolean){
-        pref.apply {
-            edit().putBoolean(KEY_FIRST_RUN, firstRun).apply()
-        }
+        pref.edit()
+                .putBoolean(KEY_FIRST_RUN, firstRun)
+                .apply()
     }
 
     fun isFirstRun() = pref.getBoolean(KEY_FIRST_RUN, true)
