@@ -2,6 +2,8 @@ package hu.doboadam.howtube.ui.playvideo
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -24,6 +26,8 @@ class PlayVideoActivity : AppCompatActivity() {
     private lateinit var videoId: String
     private lateinit var viewModel: PlayVideoViewModel
     private lateinit var adapter: CommentListAdapter
+    private lateinit var youtubePlayer: YouTubePlayer
+
 
     companion object {
         const val VIDEO_ID = "video_id"
@@ -122,12 +126,14 @@ class PlayVideoActivity : AppCompatActivity() {
         }
     }
 
+
     private fun initYoutubePlayer() {
         val youTubePlayerSupportFragment =
                 supportFragmentManager.findFragmentByTag(YouTubePlayerSupportFragment::class.java.simpleName) as YouTubePlayerSupportFragment
         youTubePlayerSupportFragment.initialize(getString(R.string.api_key), object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(provider: YouTubePlayer.Provider, player: YouTubePlayer, wasRestored: Boolean) {
                 if (!wasRestored) {
+                    youtubePlayer = player
                     player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT)
                     player.loadVideo(videoId)
                 }
@@ -140,6 +146,11 @@ class PlayVideoActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        finish()
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            youtubePlayer.setFullscreen(false)
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } else {
+            finish();
+        }
     }
 }
