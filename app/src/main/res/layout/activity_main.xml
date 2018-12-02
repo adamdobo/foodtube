@@ -8,42 +8,54 @@
     android:background="@drawable/background"
     tools:context=".ui.login.LoginActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="136dp"
+        android:fontFamily="@font/satisfy_regular"
+        android:text="@string/app_name"
+        android:textSize="80sp"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/googleSignInButton"
-        android:layout_width="200dp"
+        android:layout_width="230dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="104dp"
-        android:background="@drawable/button_background"
-        android:drawableStart="@drawable/common_google_signin_btn_icon_dark_normal"
-        android:paddingStart="0dp"
+        android:background="@drawable/rounded_button"
+        android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:drawableStart="@drawable/common_google_signin_btn_icon_light_normal"
         android:text="@string/sign_in"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/facebookSignInButton"/>
 
     <Button
         android:id="@+id/facebookSignInButton"
-        android:layout_width="200dp"
+        android:layout_width="230dp"
         android:layout_height="55dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/button_background"
-        android:drawableStart="@drawable/com_facebook_button_icon"
-        android:paddingStart="16dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/rounded_button"
+        android:drawableStart="@drawable/com_facebook_button_icon_blue"
+        android:paddingStart="32dp"
         android:paddingEnd="0dp"
         android:text="@string/sign_in"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/googleSignInButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/facebookLoginButton"

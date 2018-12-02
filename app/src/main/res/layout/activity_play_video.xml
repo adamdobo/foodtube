@@ -131,6 +131,7 @@
                     android:background="?selectableItemBackground"
                     android:layout_gravity="end|center"
                     android:layout_marginEnd="16dp"
+                    android:paddingBottom="8dp"
                     android:tint="@color/colorAccent"/>
             </FrameLayout>
 
