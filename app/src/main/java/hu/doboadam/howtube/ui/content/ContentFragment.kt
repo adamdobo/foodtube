@@ -32,7 +32,7 @@ class ContentFragment : Fragment() {
             listener = context
         } else {
             throw RuntimeException("${context.toString()} must implement in" +
-                    "terface OnCategoryClickedListener")
+                    "terface OnBackPressedListener")
         }
     }
 

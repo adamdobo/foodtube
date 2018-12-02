@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import hu.doboadam.howtube.R
 import hu.doboadam.howtube.extensions.createDialog
+import hu.doboadam.howtube.extensions.isYoutubeVideo
 import hu.doboadam.howtube.model.Category
 import hu.doboadam.howtube.model.Result
 import hu.doboadam.howtube.ui.BaseViewModelFragment
@@ -26,6 +27,7 @@ class CategoryListFragment : BaseViewModelFragment() {
     private lateinit var viewModel: CategoryListViewModel
     private lateinit var listener: OnCategoryClickedListener
     private var dialog: AlertDialog? = null
+    private lateinit var dialogView: View
 
     companion object {
         fun newInstance(): BaseViewModelFragment = CategoryListFragment()
@@ -43,6 +45,24 @@ class CategoryListFragment : BaseViewModelFragment() {
         setUpRecyclerView()
         addVideo.setOnClickListener {
             dialog?.show()
+            setDialogClickListeners(dialog)
+        }
+    }
+
+    private fun setDialogClickListeners(dialog: AlertDialog?) {
+        dialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.setOnClickListener {
+            with(dialogView) {
+                val category = categorySpinner.selectedItem as Category
+                when {
+                    videoUrlText.text.toString().isYoutubeVideo() -> {
+                        videoUrlLayout.error = null
+                        dialog.dismiss()
+                        viewModel.uploadVideo(videoUrlText.text.toString(), category.id)
+                    }
+                    else -> videoUrlLayout.error = context.getString(R.string.invalid_url)
+                }
+
+            }
         }
     }
 
@@ -57,7 +77,7 @@ class CategoryListFragment : BaseViewModelFragment() {
 
 
     private fun setUpRecyclerView() {
-        categoryList.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        categoryList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 when {
@@ -74,18 +94,17 @@ class CategoryListFragment : BaseViewModelFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.getCategoryListLiveData().observe(this, Observer<List<Category>> { value ->
+        viewModel.categoryLiveData.observe(this, Observer<List<Category>> { value ->
             value?.let {
-                if(dialog == null){
+                if (dialog == null) {
                     initDialog(it)
                 }
                 adapter.setItems(it)
-                addVideo.show()
             }
         })
         viewModel.uploadSucceeded.observe(this, Observer<Result> { result ->
             result?.also {
-                val message = when(it) {
+                val message = when (it) {
                     Result.Success -> getString(R.string.upload_success)
                     Result.Failure -> getString(R.string.upload_failed)
 
@@ -96,17 +115,12 @@ class CategoryListFragment : BaseViewModelFragment() {
     }
 
     private fun initDialog(it: List<Category>) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_add_new_video, null)
+        dialogView = layoutInflater.inflate(R.layout.dialog_add_new_video, null)
         dialog = createDialog {
             setTitle(getString(R.string.add_new_video))
             setUpSpinner(it, dialogView)
             setNegativeButton(getString(R.string.cancel), null)
-            setPositiveButton(getString(R.string.ok)) { _, _ ->
-                with(dialogView) {
-                    val category = categorySpinner.selectedItem as Category
-                    viewModel.checkAndUploadVideo(videoUrlText.text.toString(), category.id)
-                }
-            }
+            setPositiveButton(getString(R.string.ok), null)
             setView(dialogView)
         }
     }

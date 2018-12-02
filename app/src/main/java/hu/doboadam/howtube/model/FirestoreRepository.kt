@@ -5,6 +5,7 @@ import com.google.firebase.firestore.*
 
 object FirestoreRepository {
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+
     fun listenToCollectionChanges(collectionPath: String, run: (querySnapshot: QuerySnapshot?, exception: FirebaseFirestoreException?) -> Unit): ListenerRegistration =
             db.collection(collectionPath).addSnapshotListener { querySnapshot, exception ->
                 run(querySnapshot, exception)

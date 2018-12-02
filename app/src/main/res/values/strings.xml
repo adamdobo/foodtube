@@ -25,4 +25,5 @@
     <string name="title_activity_content_view_pager">ContentViewPagerActivity</string>
     <string name="uploaded_videos">Uploaded videos</string>
     <string name="youtube_videos">Youtube videos</string>
+    <string name="invalid_url">Invalid URL format</string>
 </resources>

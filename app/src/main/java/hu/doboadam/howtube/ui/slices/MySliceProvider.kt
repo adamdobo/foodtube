@@ -1,4 +1,4 @@
-package hu.doboadam.howtube
+package hu.doboadam.howtube.ui.slices
 
 import android.app.PendingIntent
 import android.content.ContentResolver

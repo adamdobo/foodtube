@@ -13,9 +13,13 @@ import hu.doboadam.howtube.model.YoutubeVideo
 import timber.log.Timber
 
 abstract class BaseViewModel : ViewModel() {
+
     protected var listener: ListenerRegistration = ListenerRegistration { }
     private var appIndexListener: ListenerRegistration = ListenerRegistration { }
 
+    companion object {
+        private const val VIDEOS = "videos"
+    }
 
     open fun startListeningToDbChanges() {
         updateIndexOnVideoUpload()
@@ -27,7 +31,7 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     private fun updateIndexOnVideoUpload() {
-        appIndexListener = FirestoreRepository.listenToCollectionChanges("videos") { snapshot: QuerySnapshot?, exception: FirebaseFirestoreException? ->
+        appIndexListener = FirestoreRepository.listenToCollectionChanges(VIDEOS) { snapshot: QuerySnapshot?, exception: FirebaseFirestoreException? ->
             if (exception != null) {
                 Timber.e("Listening failed with $exception")
             }
@@ -46,7 +50,6 @@ abstract class BaseViewModel : ViewModel() {
                 }
             }
         }
-
     }
 
     private fun updateFirebaseAppIndex(video: YoutubeVideo) {

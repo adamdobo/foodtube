@@ -60,7 +60,7 @@ class PlayVideoActivity : AppCompatActivity() {
 
         }
         ratingBar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { _, fl: Float, _ ->
-            viewModel.submitRating(getFirebaseUserId(), fl)
+            viewModel.submitRating(getFirebaseUserId()!!, fl)
         }
         setupRecyclerView()
     }
@@ -150,7 +150,7 @@ class PlayVideoActivity : AppCompatActivity() {
             youtubePlayer.setFullscreen(false)
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         } else {
-            finish();
+            finish()
         }
     }
 }

@@ -62,7 +62,7 @@ class PlayVideoViewModel(private val videoId: String) : BaseViewModel() {
         FirestoreRepository.updateDocumentWithCustomId("$VIDEO_PATH/$videoId", COMMENT_PATH, FieldValue.arrayUnion(map))
     }
 
-    fun submitRating(firebaseUserId: String?, fl: Float) {
-        FirestoreRepository.addDocumentWithCustomId("$VIDEO_PATH/$videoId/$RATING_PATH/$firebaseUserId", Rating(firebaseUserId!!, fl))
+    fun submitRating(firebaseUserId: String, fl: Float) {
+        FirestoreRepository.addDocumentWithCustomId("$VIDEO_PATH/$videoId/$RATING_PATH/$firebaseUserId", Rating(firebaseUserId, fl))
     }
 }

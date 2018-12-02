@@ -26,7 +26,6 @@ import hu.doboadam.howtube.repository.SharedPrefRepository
 import hu.doboadam.howtube.ui.BaseViewModelActivity
 import hu.doboadam.howtube.ui.content.ContentActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 
 
 class LoginActivity : BaseViewModelActivity() {
@@ -63,7 +62,7 @@ class LoginActivity : BaseViewModelActivity() {
             }
 
             override fun onError(error: FacebookException?) {
-                Snackbar.make(mainLayout, "Login failed :(", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(mainLayout, "Login failed", Snackbar.LENGTH_LONG).show()
             }
 
             override fun onSuccess(result: LoginResult) {
@@ -108,7 +107,7 @@ class LoginActivity : BaseViewModelActivity() {
             if (it.isSuccessful) {
                 advance()
             } else {
-                Snackbar.make(mainLayout, "Login failed :(", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(mainLayout, "Login failed", Snackbar.LENGTH_LONG).show()
             }
         }
     }
@@ -137,12 +136,11 @@ class LoginActivity : BaseViewModelActivity() {
                     firebaseAuthWithGoogle(account)
                 }
             } catch (e: ApiException) {
-                Timber.e("Google Sign-in failed with $e")
+                Snackbar.make(mainLayout, "Login failed", Snackbar.LENGTH_LONG).show()
             }
         } else {
             callbackManager.onActivityResult(requestCode, resultCode, data)
         }
-
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
@@ -152,7 +150,7 @@ class LoginActivity : BaseViewModelActivity() {
                     if (it.isSuccessful) {
                         advance()
                     } else {
-                        Snackbar.make(mainLayout, "Login failed :(", Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(mainLayout, "Login failed", Snackbar.LENGTH_LONG).show()
                     }
                 }
     }

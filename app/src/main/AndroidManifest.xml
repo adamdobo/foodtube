@@ -83,7 +83,7 @@
         </activity>
 
         <provider
-            android:name=".MySliceProvider"
+            android:name=".ui.slices.MySliceProvider"
             android:authorities="hu.doboadam.howtube"
             android:exported="true">
             <intent-filter android:autoVerify="true">

@@ -5,7 +5,8 @@ import java.util.*
 
 
 data class YoutubeVideo(val id: String = "", val snippet: YoutubeVideoSnippet = YoutubeVideoSnippet(),
-                        val contentDetails: YoutubeVideoContentDetails = YoutubeVideoContentDetails(), val comments: List<Comment> = emptyList(), var uploadDate: Timestamp = Timestamp(Date()),
+                        val contentDetails: YoutubeVideoContentDetails = YoutubeVideoContentDetails(), val comments: List<Comment> = emptyList(),
+                        var uploadDate: Timestamp = Timestamp(Date()),
                         var ratings: List<Rating> = emptyList(),
                         var categoryId: Int = 0)
 
