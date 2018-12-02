@@ -6,17 +6,10 @@
     android:layout_marginBottom="8dp"
     app:cardElevation="4dp">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <FrameLayout
             android:id="@+id/thumbnailLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/videoThumbnail"
@@ -29,28 +22,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:padding="8dp"
                 android:textSize="12sp"
                 android:background="@android:color/black"
                 android:textColor="@android:color/white"
-                android:layout_gravity="end|bottom"/>
+                android:layout_gravity="end|top"/>
+            <TextView
+                android:id="@+id/videoTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_background"
+                android:padding="16dp"
+                android:layout_gravity="bottom"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
         </FrameLayout>
 
 
-        <TextView
-            android:id="@+id/videoTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorAccent"
-            android:padding="16dp"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/thumbnailLayout" />
-
-
-    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

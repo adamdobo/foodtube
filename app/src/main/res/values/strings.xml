@@ -26,4 +26,6 @@
     <string name="uploaded_videos">Uploaded videos</string>
     <string name="youtube_videos">Youtube videos</string>
     <string name="invalid_url">Invalid URL format</string>
+    <string name="content_uri">content://hu.doboadam.szakdoga/recipe</string>
+    <string name="open_video">Open video:</string>
 </resources>
