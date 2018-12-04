@@ -41,6 +41,9 @@ class LoginActivity : BaseViewModelActivity() {
     companion object {
         private const val EMAIL = "email"
         private const val PUBLIC_PROFILE = "public_profile"
+        private const val CONTENT_URI = "content://hu.doboadam.szakdoga/recipe"
+        private const val GOOGLE_SEARCH_PACKAGE = "com.google.android.googlequicksearchbox"
+        private const val GOOGLE_PLAY_PACKAGE = "com.google.android.gms"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,9 +100,9 @@ class LoginActivity : BaseViewModelActivity() {
 
     private fun grantSlicePermissions() {
         val manager = SliceManager.getInstance(this)
-        val mainUri = Uri.parse("content://hu.doboadam.szakdoga/recipe")
-        manager.grantSlicePermission("com.google.android.googlequicksearchbox", mainUri)
-        manager.grantSlicePermission("com.google.android.gms", mainUri)
+        val mainUri = Uri.parse(CONTENT_URI)
+        manager.grantSlicePermission(GOOGLE_SEARCH_PACKAGE, mainUri)
+        manager.grantSlicePermission(GOOGLE_PLAY_PACKAGE, mainUri)
     }
 
     private fun handleFacebookAccessToken(accessToken: AccessToken) {

@@ -86,7 +86,7 @@ class MySliceProvider : SliceProvider() {
                     .addRow {
                         it.apply {
                             title = context.getString(R.string.open_video)
-                            subtitle = recipe?.snippet?.title ?: "Loading..."
+                            subtitle = recipe?.snippet?.title ?: context.getString(R.string.loading)
                             primaryAction = getActivityAction(intent)
                         }
                     }
