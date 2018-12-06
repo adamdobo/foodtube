@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "717275960129",
+    "firebase_url": "https://howtube-5185e.firebaseio.com",
+    "project_id": "howtube-5185e",
+    "storage_bucket": "howtube-5185e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717275960129:android:a943227dd64363c1",
+        "android_client_info": {
+          "package_name": "hu.doboadam.howtube"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "717275960129-l53mhf2gbovnvgriv003o3rbu3cuqne5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.doboadam.howtube",
+            "certificate_hash": "e9a9aec1326248b26ec13eb34bceaa1edfb57a93"
+          }
+        },
+        {
+          "client_id": "717275960129-eqobisbjjcalf5f39e50citag28f80jq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk6clBc6NZKnhv1lF_VAJaU3QvA4AEFI0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "717275960129-eqobisbjjcalf5f39e50citag28f80jq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
